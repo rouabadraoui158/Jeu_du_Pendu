@@ -15,6 +15,7 @@ bool arbreEstVide(TArbre a)
     }
     return false;
 }
+
 //Construire noeud
 TArbre arbreCons(char caractere, int entier, TArbre filsGauche, TArbre filsDroit)
 {
@@ -25,7 +26,8 @@ TArbre arbreCons(char caractere, int entier, TArbre filsGauche, TArbre filsDroit
     a->filsDroit = filsDroit;
     return a;
 }
-//retorune le caractere du racine
+
+//retourner le caractere du racine
 char arbreRacineLettre(TArbre a)
 {
     if (!arbreEstVide(a))
@@ -35,15 +37,6 @@ char arbreRacineLettre(TArbre a)
     return '\0';
 }
 
-//retorune le nombre d'occurence du racine
-int arbreRacineNbOcc(TArbre a)
-{
-    if (!arbreEstVide(a))
-    {
-        return a->nbrOccurrence;
-    }
-    return 0;
-}
 //Retourne fils Gauche
 TArbre noeudFilsGauche(TArbre a)
 {
@@ -53,6 +46,7 @@ TArbre noeudFilsGauche(TArbre a)
     }
     return NULL;
 }
+
 //Retourne fils Droit
 TArbre noeudFilsDroit(TArbre a)
 {
@@ -75,7 +69,6 @@ void arbreSuppr(TArbre *noeud)
     }
 }
 
-
 //Retroune l'hauteur de l'arbre
 int hauteurArbre(TArbre a)
 {
@@ -92,7 +85,7 @@ void afficherNoeuds(TArbre noeud, int espace)
     {
     	int i;
         for (i = 0; i < espace; i++)
-            printf("-");
+            printf(".");
 
         if (noeud->caractere != '\0')
         {
@@ -130,5 +123,19 @@ void afficherArbre(TArbre a)
 }
 
 
+// Recherche d'un caractère dans le Trie
+TArbre rechercheCaractereTrie(TArbre a, char caractere) {
+    // Cas de base: arbre vide ou caractère trouvé
+    if (arbreEstVide(a) || a->caractere == caractere) {
+        return a;
+    }
+
+    // Si le caractère est plus petit que le caractère de la racine, recherche dans le sous-arbre gauche
+    if (caractere != a->caractere) {
+        return rechercheCaractereTrie(a->filsGauche, caractere);
+    }
+    // Sinon, recherche dans le sous-arbre droit
+    return rechercheCaractereTrie(a->filsDroit, caractere);
+}
 
 

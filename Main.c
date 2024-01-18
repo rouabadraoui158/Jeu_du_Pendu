@@ -1,5 +1,3 @@
-//main.c
-//Pour Tester les Fonctions Primitives de l'Arbre et de Dictionnaire
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -12,64 +10,41 @@
 #include "pendu.c"
 #include "pendu.h"
 
-int main(){
-    TArbre dico;
-	dico = arbreConsVide();
 
+int main() {
 
-int i=0;
-srand(time(NULL));
-
-	char *mot= malloc( 255 );
+    TArbre arbre;
+	   arbre = arbreConsVide();
 	
+    afficherMotsDictionnaire(); 
+      
+    FILE *fichierMots = fopen("Dictionnaire.txt", "r");
 
-while(i<8)
-{
+    if (fichierMots == NULL) {
+        fprintf(stderr, "Impossible d'ouvrir le fichier Dictionnaire.txt.\n");
+        return 1;
+    }
 
-	int x=piocherMot(mot);
-	
-	if(x==1){
-		dicoInsererMot(mot,&dico);
-		i++;
-	}
+    char ligne[TAILLE_MAX];
 
-}
+    while (fgets(ligne, TAILLE_MAX, fichierMots) != NULL) {
+        size_t len = strlen(ligne);
+        if (len > 0 && ligne[len - 1] == '\n') {
+            ligne[len - 1] = '\0';
+        }
 
-dicoInsererMot("Yasmine",&dico);
-dicoInsererMot("cas",&dico);
-dicoInsererMot("Yasmine",&dico);
+        dicoInsererMot(ligne, &arbre);
+    }
 
-/*
-dicoInsererMot("cas",&dico);
-dicoInsererMot("ce",&dico);
-dicoInsererMot("ces",&dico);
-dicoInsererMot("ci",&dico);
-dicoInsererMot("de",&dico);
-dicoInsererMot("des",&dico);
-dicoInsererMot("do",&dico);
-*/
-
-afficherArbre(dico);
-dicoAfficher(dico);
-
-printf("\n\nArbre est vide? : %i \n",arbreEstVide(dico));
-printf("Racine lettre : %c \n",arbreRacineLettre(dico));
-//printf("Racine Nombre Occurrence : %i \n",arbreRacineNbOcc(dico));
-TArbre racineFilsDroit = noeudFilsDroit(dico);
-TArbre racineFilsGauche = noeudFilsGauche(dico);
-printf("Racine fils gauche lettre : %c \n",arbreRacineLettre(racineFilsGauche ));
-printf("Racine fils droit lettre  : %c \n",arbreRacineLettre(racineFilsDroit));
-printf("Nbr Mots Total : %i \n",dicoNbMotsTotal(dico));
-printf("Nbr Mots different : %i \n",dicoNbMotsDifferents(dico));
-printf("nombre de occurrence mot(parfait) : %i \n",dicoNbOccMot("cas",dico));
-
-lettrespercentage(dico);
-arbreSuppr(&dico);
-printf("Arbre est vide ? : %i \n",arbreEstVide(dico));
-
-	    genererMotSecret(&dico);
-	    jeuxDePendu();
+    fclose(fichierMots);
     
+    afficherArbre(arbre);
+    
+    genererMotSecret(&arbre);
+	
+    jeuxDePendu(arbre);
+	    
+    arbreSuppr(&arbre);
     
 return 0;    
 }

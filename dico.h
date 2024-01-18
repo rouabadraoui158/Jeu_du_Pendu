@@ -1,20 +1,16 @@
-//Primitives du Dictionnaire
 #ifndef DEF_DICTIONNAIRE
 #define DEF_DICTIONNAIRE
+#define TAILLE_MAX 255
+
+typedef struct {
+    char mot[TAILLE_MAX];
+} Mot;
 int piocherMot(char *motPioche);                
 int nombreAleatoire(int nombreMax);       
-      
-void dicoAfficher(TArbre a);
-void afficherMots(char *mot, TArbre a); 
-        
+void afficherMotsDictionnaire();        
 void dicoInsererMot(char mot[], TArbre *a); 
 void insererMot(char *mot, TArbre *a);
-
-int dicoNbOccMot(char mot[],TArbre noeud);       
-int dicoNbMotsDifferents(TArbre a);        
-int dicoNbMotsTotal(TArbre a); 
- 
-void lettrespercentage( TArbre a);           
+          
 #endif
 
 

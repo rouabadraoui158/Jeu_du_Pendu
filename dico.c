@@ -1,62 +1,43 @@
 
 int nombreAleatoire(int nombreMax)
 {
-    //srand(time(NULL));
-    return (rand() % nombreMax);
+    return (rand() % nombreMax+1);
 }
+
 
 int piocherMot(char *motPioche)
 {
-	
- FILE* dico = NULL; // Le pointeur de fichier qui va contenir notre fichier
- int nombreMots = 0, numMotChoisi = 0, i = 0;
- int caractereLu = 0;
- dico = fopen("Dictionnaire.txt", "r"); // On ouvre le dictionnaire en lecture seule
- // On vï¿½rifie si on a rï¿½ussi ï¿½ ouvrir le dictionnaire
- 
-if (dico == NULL) // Si on n'a PAS rï¿½ussi ï¿½ ouvrir le fichier
- {
- printf("\nImpossible de charger le dictionnaire de mots");
- return 0; // On retourne 0 pour indiquer que la fonction a ï¿½chouï¿½
- // ï¿½ la lecture du return, la fonction s'arrï¿½te immï¿½diatement.
- }
+    FILE *dico = fopen("Dictionnaire.txt", "r");
 
- // On compte le nombre de mots dans le fichier (il suffit de compter les
- // entrï¿½es \n
- do
- {
- caractereLu = fgetc(dico);
- if (caractereLu == '\n')
- nombreMots++;
- } while(caractereLu != EOF);
+    if (dico == NULL) {
+        printf("\nImpossible de charger le dictionnaire de mots");
+        return 0;
+    }
 
- numMotChoisi = nombreAleatoire(nombreMots); // On pioche un mot au hasard
- // On recommence ï¿½ lire le fichier depuis le dï¿½but. On s'arrï¿½te lorsqu'on est arrivï¿½ au bon mot
- //printf("random number=%d\n",numMotChoisi);
- rewind(dico);
+    // Count the number of words in the file
+    int nombreMots = 0;
+    while (fscanf(dico, "%s", motPioche) == 1) {
+        nombreMots++;
+    }
 
- while (numMotChoisi > 0)
- {
+    // Generate a random number between 0 and (nombreMots - 1)
+    srand(time(NULL));
+    int numMotChoisi = rand() % nombreMots;
 
- caractereLu = fgetc(dico);
+    // Reset the file pointer to the beginning of the file
+    rewind(dico);
 
-if (caractereLu == '\n')
- numMotChoisi--;
- }
+    // Read the file until the chosen word
+    for (int i = 0; i < numMotChoisi; i++) {
+        if (fscanf(dico, "%s", motPioche) != 1) {
+            printf("Erreur lors de la récupération du mot secret.\n");
+            fclose(dico);
+            return 0;
+        }
+    }
 
-
- /* Le curseur du fichier est positionnï¿½ au bon endroit.
- On n'a plus qu'ï¿½ faire un fgets qui lira la ligne */
-fgets(motPioche,100, dico);
-
- // On vire le \n ï¿½ la fin
-
-
-
- motPioche[strlen(motPioche) - 1] = '\0';
-
- fclose(dico);
- return 1; // Tout s'est bien passï¿½, on retourne 1
+    fclose(dico);
+    return 1;
 }
 
 
@@ -117,7 +98,7 @@ void insererMot(char *mot, TArbre *noeud)
     }
 }
 
-//Permet d'ajouter un mot au dictionnaire
+//Permet d'ajouter un mot 
 void dicoInsererMot(char *mot, TArbre*arbre)
 {
     if (strlen(mot) > 0)
@@ -130,110 +111,55 @@ void dicoInsererMot(char *mot, TArbre*arbre)
     }
 }
 
-void afficherMots(char *mot, Noeud *noeud)
-{
-    if (noeud != NULL)
-    {
-        if (noeud->caractere != '\0')
-        {
-            if (noeud->filsGauche != NULL) //ajouter caractere a mot
-            {
-                strcat(mot, (char[2]){noeud->caractere, '\0'});
-                afficherMots(mot, noeud->filsGauche);
-            }
-            mot[strlen(mot) - 1] = '\0'; //supprimer le dernier caractere
-            if (noeud->filsDroit != NULL) //fait rien et descendre droite
-            {
-                afficherMots(mot, noeud->filsDroit);
-            }
-        }
-        else
-        { 
-            printf("(%i) %s\n", noeud->nbrOccurrence,mot);//aficher mot
-            if (noeud->filsDroit != NULL)
-                afficherMots(mot, noeud->filsDroit);
-        }
+// Function to display all words from the dictionary
+void afficherMotsDictionnaire() {
+	   
+    FILE *fichierMots = fopen("Dictionnaire.txt", "r");
+
+    if (fichierMots == NULL) {
+        fprintf(stderr, "Impossible d'ouvrir le fichier Dictionnaire.txt.\n");
+        return;
     }
-}
 
-//Permet d'afficher le dictionnaire 
-void dicoAfficher(TArbre a)
-{
-    printf("\n*******************************DICTIONNAIRE*******************************\n");
-    char mot[100] = "";
-    afficherMots(mot, a);
-    printf("\n/*******************************DICTIONNAIRE*******************************/\n");
-}
+    // Tableau dynamique pour stocker les mots
+    Mot *mots = NULL;
+    size_t tailleMots = 0;
+    char ligne[TAILLE_MAX];
 
+    // Lisez chaque ligne du fichier et stockez le mot dans le tableau
+    while (fgets(ligne, TAILLE_MAX, fichierMots) != NULL) {
+        size_t len = strlen(ligne);
 
-
-
-//retourne le nombre des mots différents
-int dicoNbMotsDifferents(TArbre a){
-
-    if (a == NULL)
-        return 0;
-	int test=(a->caractere == '\0')?1:0;
-    return  test+dicoNbMotsDifferents(a->filsGauche)  + dicoNbMotsDifferents(a->filsDroit);
-}
-//retourne le nombre des mots total
-int dicoNbMotsTotal(TArbre a){
-
-    if (a == NULL)
-        return 0;
-	int test=(a->caractere == '\0')?a->nbrOccurrence:0;
-    return  test+dicoNbMotsTotal(a->filsGauche)  + dicoNbMotsTotal(a->filsDroit);
-}
-    //retourne le nombre d’apparitions d’un mot
-int dicoNbOccMot(char mot[],TArbre noeud){
-	
-    
-	  if(noeud != NULL){
-        if(mot[0] == noeud->caractere ){
-            if(mot[0] == '\0'){
-                  return noeud->nbrOccurrence;
-            }else{
-                mot++;
-                return dicoNbOccMot(mot,noeud->filsGauche);
-            }
+        // Supprimez le saut de ligne à la fin du mot
+        if (len > 0 && ligne[len - 1] == '\n') {
+            ligne[len - 1] = '\0';
         }
-        return dicoNbOccMot(mot,noeud->filsDroit);
-      }
-      return 0;
+
+        // Ajoutez le mot au tableau dynamique
+        Mot nouveauMot;
+        strcpy(nouveauMot.mot, ligne);
+
+        tailleMots++;
+        mots = realloc(mots, tailleMots * sizeof(Mot));
+        mots[tailleMots - 1] = nouveauMot;
+    }
+
+    fclose(fichierMots);
+    
+    printf("\n\n______________________________________________________________________________________\n");
+    printf("**************************************************************************************\n");
+    printf("\n**************!! Projet Algorithmique Premiere Ingenierie ISI Ariana !!*************\n");
+    printf("______________________________________________________________________________________\n");
+    printf("______________________________________________________________________________________\n\n");
+
+
+    // Affichez tous les mots du tableau
+    printf("\n********DICTIONNAIRE********\n");
+    printf("\nMots du dictionnaire :\n");
+    for (size_t i = 0; i < tailleMots; i++) {
+        printf("[%ld] %s\n", i + 1, mots[i].mot);
+    }
+  printf("\n/********DICTIONNAIRE********/\n");
+    // Libérez la mémoire utilisée par le tableau
+    free(mots);
 }
-
-
-
-
-////////////
-//retourne le nombre d'occurence d'une lettre
-int occchar(TArbre a,char c){
-
-    if (a == NULL)
-        return 0;
-	int test=(a->caractere == c)?1:0;
-    return  test+occchar(a->filsGauche,c)  + occchar(a->filsDroit,c);
-}
-//retourne le nombre des lettres
-
-int totalchar(TArbre a){
-
-    if (a == NULL)
-        return 0;
-	int test=(a->caractere != '\0')?1:0;
-    return  test+totalchar(a->filsGauche)  + totalchar(a->filsDroit);
-}
-
-//retourne les fréquences des lettres dans le dictionnaire
-void lettrespercentage( TArbre a){
-	 char c;
-	
-	         printf("_______________________________\nFrequence des lettres\n_______________________________\n");
-
-    for (c = 'a'; c <= 'z'; ++c)
-        printf("\t%c:%.1f%% \n", c,( (double)occchar(a,c)/ (double)totalchar(a))*100);
-	
-}
-
-
-
