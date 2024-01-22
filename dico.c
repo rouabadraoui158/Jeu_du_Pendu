@@ -10,7 +10,7 @@ int piocherMot(char *motPioche)
     FILE *dico = fopen("Dictionnaire.txt", "r");
 
     if (dico == NULL) {
-        printf("\nImpossible de charger le dictionnaire de mots");
+        printf("\nUnable to load the word dictionary");
         return 0;
     }
 
@@ -30,7 +30,8 @@ int piocherMot(char *motPioche)
     // Read the file until the chosen word
     for (int i = 0; i < numMotChoisi; i++) {
         if (fscanf(dico, "%s", motPioche) != 1) {
-            printf("Erreur lors de la récupération du mot secret.\n");
+            printf("Error retrieving the secret word.\n");
+
             fclose(dico);
             return 0;
         }
@@ -117,7 +118,7 @@ void afficherMotsDictionnaire() {
     FILE *fichierMots = fopen("Dictionnaire.txt", "r");
 
     if (fichierMots == NULL) {
-        fprintf(stderr, "Impossible d'ouvrir le fichier Dictionnaire.txt.\n");
+        fprintf(stderr, "Unable to open the file Dictionary.txt.\n");
         return;
     }
 
@@ -147,19 +148,19 @@ void afficherMotsDictionnaire() {
     fclose(fichierMots);
     
     printf("\n\n______________________________________________________________________________________\n");
-    printf("**************************************************************************************\n");
-    printf("\n**************!! Projet Algorithmique Premiere Ingenierie ISI Ariana !!*************\n");
-    printf("______________________________________________________________________________________\n");
-    printf("______________________________________________________________________________________\n\n");
+printf("**************************************************************************************\n");
+printf("\n**************!! Algorithm Project First Engineering ISI Ariana !!********************\n");
+printf("______________________________________________________________________________________\n");
+printf("______________________________________________________________________________________\n\n");
 
+// Display all words in the array
+printf("\n********DICTIONARY********\n");
+printf("\nWords from the dictionary:\n");
+for (size_t i = 0; i < tailleMots; i++) {
+    printf("[%ld] %s\n", i + 1, mots[i].mot);
+}
+printf("\n/********DICTIONARY********/\n");
 
-    // Affichez tous les mots du tableau
-    printf("\n********DICTIONNAIRE********\n");
-    printf("\nMots du dictionnaire :\n");
-    for (size_t i = 0; i < tailleMots; i++) {
-        printf("[%ld] %s\n", i + 1, mots[i].mot);
-    }
-  printf("\n/********DICTIONNAIRE********/\n");
-    // Libérez la mémoire utilisée par le tableau
-    free(mots);
+// Free the memory used by the array
+free(mots);
 }

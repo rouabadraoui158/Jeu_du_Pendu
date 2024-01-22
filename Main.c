@@ -21,7 +21,7 @@ int main() {
     FILE *fichierMots = fopen("Dictionnaire.txt", "r");
 
     if (fichierMots == NULL) {
-        fprintf(stderr, "Impossible d'ouvrir le fichier Dictionnaire.txt.\n");
+        fprintf(stderr, "Unable to open the file Dictionary.txt.\n");
         return 1;
     }
 

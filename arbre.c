@@ -114,11 +114,11 @@ void afficherArbre(TArbre a)
 {
     if (a != NULL)
     {
-        printf("\n*******************************ARBRE*******************************\n");
-        printf("\nHauteur de l'arbre : %i\n\n", hauteurArbre(a));
+        printf("\n*******************************TREE*******************************\n");
+        printf("\nHeight of the tree : %i\n\n", hauteurArbre(a));
         printf("(R)"); //racine
         afficherNoeuds(a, 1);
-        printf("\n/*******************************ARBRE*******************************/\n");
+        printf("\n/*******************************TREE*******************************/\n");
     }
 }
 
