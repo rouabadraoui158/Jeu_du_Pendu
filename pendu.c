@@ -61,7 +61,7 @@ void genererMotSecret(TArbre *Mdico) {
 
 void displayHangman(int tries) {
     switch (tries) {
-        case 8:
+        case 1:
             printf("  _______\n");
             printf("  |\n");
             printf("  |\n");
@@ -69,35 +69,12 @@ void displayHangman(int tries) {
             printf("  |\n");
             printf("  |\n");
             break;
-        case 7:
+        case 2:
             printf("  _______\n");
             printf("  |     |\n");
             printf("  |\n");
             printf("  |\n");
             printf("  |\n");
-            printf("  |\n");
-            break;
-        case 6:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 5:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |     |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 4:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |    /|\n");
             printf("  |\n");
             printf("  |\n");
             break;
@@ -105,23 +82,74 @@ void displayHangman(int tries) {
             printf("  _______\n");
             printf("  |     |\n");
             printf("  |     O\n");
-            printf("  |    /|\\\n");
+            printf("  |\n");
+            printf("  |\n");
             printf("  |\n");
             printf("  |\n");
             break;
-        case 2:
+        case 4:
+            printf("  _______\n");
+            printf("  |     |\n");
+            printf("  |     O\n");
+            printf("  |     |\n");
+            printf("  |\n");
+            printf("  |\n");
+            printf("  |\n");
+            break;
+        case 5:
+            printf("  _______\n");
+            printf("  |     |\n");
+            printf("  |     O\n");           
+            printf("  |     |\n");
+            printf("  |     |\n");
+            printf("  |\n");
+            printf("  |\n");
+            break;
+        case 6:
+            printf("  _______\n");
+            printf("  |     |\n");
+            printf("  |     O\n");             
+            printf("  |    /|\n");
+            printf("  |     |\n");
+            printf("  |\n");
+            printf("  |\n");
+            break;
+        case 7:
             printf("  _______\n");
             printf("  |     |\n");
             printf("  |     O\n");
             printf("  |    /|\\\n");
+            printf("  |     |\n");
+            printf("  |\n");
+            printf("  |\n");
+            break;
+        case 8:
+            printf("  _______\n");
+            printf("  |     |\n");
+            printf("  |     O\n");
+            printf("  |    /|\\\n");
+            printf("  |     |\n");            
             printf("  |    /\n");
             printf("  |\n");
+            printf("  |\n");
             break;
-        case 1:
+        case 9:
             printf("  _______\n");
             printf("  |     |\n");
             printf("  |     O\n");
             printf("  |    /|\\\n");
+            printf("  |     |\n");            
+            printf("  |    / \\\n");
+            printf("  |\n");
+            printf("  |\n");
+            break;
+        case 10:
+            printf("  _______\n");
+            printf("  |     |\n");
+            printf("  |     O\n");
+            printf("  |    ---\n");
+            printf("  |    /|\\\n");
+            printf("  |     |\n");            
             printf("  |    / \\\n");
             printf("  |\n");
             break;
@@ -132,7 +160,7 @@ void displayHangman(int tries) {
 int jeuxDePendu(TArbre trie) {
     int i, taille;
     char motCache[TAILLE_MAX];
-    int coupsRestants, coups;
+    int coupsRestants,coupsFaux, coups;
     char carLu;
 
     strcpy(motCache, MotSecret);
@@ -170,6 +198,7 @@ int jeuxDePendu(TArbre trie) {
     lireLigne(dif);
 
     coupsRestants = strtol(dif, NULL, 10);
+    coupsFaux = strtol(dif, NULL, 10);
     coups = coupsRestants;
     
     printf("\n \t \tNumber of attempts: %d \n", coupsRestants);
@@ -231,11 +260,15 @@ while (strncmp(motActuel, motCache, taille) != 0 && coupsRestants > 0) {
         // result == NULL or carLu != result->caractere
         
         coupsRestants--;
+        coupsFaux--;
+        
         printf("\n \t \t Letter not found. You have %d attempts left.\n", coupsRestants);
-
+        
+        //printf("\t \t --haaaaang %d\n",coups- coupsFaux);
+	displayHangman(coups - coupsFaux);  // Display Hangman for wrong letter
         printf("____________________________________________________________________________\n");
+        
     }
-    displayHangman(coupsRestants);  // Display Hangman for wrong letter
 }
  //while
 
