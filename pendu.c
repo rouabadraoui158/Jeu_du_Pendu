@@ -207,9 +207,6 @@ int jeuxDePendu(TArbre trie) {
     //printf("\nMot secret : %s \n", motCache);
     
     printf("___________________________________________\n");
-    
-char lettresProposees[TAILLE_MAX];
-lettresProposees[0] = '\0';
 
 
 while (strncmp(motActuel, motCache, taille) != 0 && coupsRestants > 0) {
