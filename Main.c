@@ -40,8 +40,10 @@ int main() {
     
     afficherArbre(arbre);
     
+    gestionDuDico(&arbre);
+    
     genererMotSecret(&arbre);
-	
+    
     jeuxDePendu(arbre);
 	    
     arbreSuppr(&arbre);

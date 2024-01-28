@@ -10,11 +10,11 @@ TArbre trie;
 // Function to read a character from the user
 char lireCaractere() {
     char caractere = 0;
-    caractere = getchar();
+    // Read the character
+    scanf(" %c", &caractere); // Notice the space before %c to skip whitespace characters
 
-    // On lit les autres caractères mémorisés un à un jusqu'au \n (pour les effacer)
-	int c;
-	while ((c = getchar()) != '\n' && c != EOF);
+    // Clear the input buffer
+    while (getchar() != '\n'); // Keep reading characters until encountering a newline
 
     // Si l'utilisateur a tapé '1', retourner une valeur spéciale pour indiquer la sortie
     if (caractere == '0') {
@@ -49,6 +49,7 @@ void genererMotSecret(TArbre *Mdico) {
 
     // Piocher un seul mot aléatoire
     if (piocherMot(MotSecret) == 1) {
+    printf("_________________________________________________\n\n");
         // Afficher le mot secret
         printf("\n \t \t ((Secret word: %s))\n", MotSecret);
 
@@ -207,8 +208,7 @@ int jeuxDePendu(TArbre trie) {
     //printf("\nMot secret : %s \n", motCache);
     
     printf("___________________________________________\n");
-
-
+    
 while (strncmp(motActuel, motCache, taille) != 0 && coupsRestants > 0) {
         printf("\n \t \t What is the secret word? %s\n", motActuel);
         printf("\t \t Remaining attempts: %d\n", coupsRestants);
