@@ -221,9 +221,23 @@ while (strncmp(motActuel, motCache, taille) != 0 && nb_fautes > 0) {
         printf("\n \t \t What is the secret word? %s\n", motActuel);
         printf("\t \t Remaining wrong attempts: %d\n", nb_fautes);
 
+        do{
         printf("\n \t \t Propose a letter: (or press 0 to quit)\n");
 
         carLu = lireCaractere();
+        //controle saisie
+        if(isalpha(carLu)){
+        break;
+        }else 
+        
+          if (carLu == -1) {
+            // User entered '0', exit the game
+            printf("\t \t !!!! Goodbye !!!!\n");
+            exit(0);
+        }
+        }
+        while(1);
+        
 
         if (carLu == -1) {
             // User entered '0', exit the game
