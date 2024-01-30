@@ -10,11 +10,11 @@ TArbre trie;
 // Function to read a character from the user
 char lireCaractere() {
     char caractere = 0;
-    // Read the character
-    scanf(" %c", &caractere); // Notice the space before %c to skip whitespace characters
+    caractere = getchar();
 
-    // Clear the input buffer
-    while (getchar() != '\n'); // Keep reading characters until encountering a newline
+    // On lit les autres caractères mémorisés un à un jusqu'au \n (pour les effacer)
+	int c;
+	while ((c = getchar()) != '\n' && c != EOF);
 
     // Si l'utilisateur a tapé '1', retourner une valeur spéciale pour indiquer la sortie
     if (caractere == '0') {
@@ -43,13 +43,11 @@ void lireLigne(char* mot) {
     mot[i] = '\0';
 }
 
-
 void genererMotSecret(TArbre *Mdico) {
     *Mdico = arbreConsVide();
 
     // Piocher un seul mot aléatoire
     if (piocherMot(MotSecret) == 1) {
-    printf("_________________________________________________\n\n");
         // Afficher le mot secret
         printf("\n \t \t ((Secret word: %s))\n", MotSecret);
 
@@ -60,109 +58,186 @@ void genererMotSecret(TArbre *Mdico) {
     }
 }
 
-void displayHangman(int tries) {
-    switch (tries) {
-        case 1:
-            printf("  _______\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 2:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 3:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 4:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |     |\n");
-            printf("  |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 5:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");           
-            printf("  |     |\n");
-            printf("  |     |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 6:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");             
-            printf("  |    /|\n");
-            printf("  |     |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 7:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |    /|\\\n");
-            printf("  |     |\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 8:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |    /|\\\n");
-            printf("  |     |\n");            
-            printf("  |    /\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 9:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |    /|\\\n");
-            printf("  |     |\n");            
-            printf("  |    / \\\n");
-            printf("  |\n");
-            printf("  |\n");
-            break;
-        case 10:
-            printf("  _______\n");
-            printf("  |     |\n");
-            printf("  |     O\n");
-            printf("  |    ---\n");
-            printf("  |    /|\\\n");
-            printf("  |     |\n");            
-            printf("  |    / \\\n");
-            printf("  |\n");
-            break;
+void displayHangman(int nb_fautes, int tentatives) {
+    switch(nb_fautes){
+        case 3 :
+            switch(tentatives){
+                case 3 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    /|\\\n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 2 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |    / \\\n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 1 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    ---\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |    / \\\n");
+                    printf("  |\n");
+                    break;
+            }
+        break;  
+        case 5 :
+            switch(tentatives){
+                case 5 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 4 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |     |\n");
+                    printf("  |     |\n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 3 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 2 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |    / \\\n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 1 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    ---\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |    / \\\n");
+                    printf("  |\n");
+                    break;
+            }
+        break;
+        case 8 :
+            switch(tentatives){
+                case 8 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     \n");
+                    printf("  |     \n");
+                    printf("  |     \n");            
+                    printf("  |     \n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 7 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |      \n");
+                    printf("  |      \n");            
+                    printf("  |      \n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 6 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |     |\n");
+                    printf("  |      \n");            
+                    printf("  |      \n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 5 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |     |\n");
+                    printf("  |     |\n");            
+                    printf("  |      \n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 4 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |      \n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 3 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |      \\\n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 2 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |    / \\\n");
+                    printf("  |\n");
+                    printf("  |\n");
+                    break;
+                case 1 :
+                    printf("  _______\n");
+                    printf("  |     |\n");
+                    printf("  |     O\n");
+                    printf("  |    ---\n");
+                    printf("  |    /|\\\n");
+                    printf("  |     |\n");            
+                    printf("  |    / \\\n");
+                    printf("  |\n");
+                    break;
+            }    
+        break;  
     }
+
 }
 
-
 int jeuxDePendu(TArbre trie) {
+
     int i, taille;
     char motCache[TAILLE_MAX];
-    int coupsRestants,coupsFaux, coups;
-    char carLu;
+    int coupsRestants,coupsFaux, coups ;
+    char carLu,cardif ;
+    int difficulte ;
+    int nb_fautes , tentatives ;
+    int attemps ;
 
     strcpy(motCache, MotSecret);
 
@@ -173,16 +248,14 @@ int jeuxDePendu(TArbre trie) {
     printf("\t______________________________________________________________\n\n");
    
     while (carLu != '1') {
-    printf(" \t \t!! If you are ready, type 1 to start !! \n");
+    printf(" \t \t!! If you are ready, tape 1 to start !! \n");
 
     carLu = lireCaractere();
-    
-    } 
-    
-       if (carLu == '1') {
-        // L'utilisateur a choisi de commencer le jeu
+        
+    if (carLu == '1') {
+                // L'utilisateur a choisi de commencer le jeu
         printf(" \t \t____The game begins____ \n");
-        }
+    }
 
     taille = strlen(motCache) ;
     printf("\n \t \t ((Size: %d ))\n", taille);
@@ -192,24 +265,48 @@ int jeuxDePendu(TArbre trie) {
         motActuel[i] = '-';
     }
     motActuel[taille] = '\0';
+    } 
 
-    char dif[TAILLE_MAX];
-    printf("\n \t \tDifficulty Level (type the number of attempts to guess the word)\n");
-   
-    lireLigne(dif);
+     
+    printf("\n \t \tDifficulty Level (Please choose the level of difficulty)\n");
+    printf("\n \t Hard (Tape 1)\n");
+    printf("\n \t Medium (Tape 2)\n");
+    printf("\n \t Easy (Tape 3)\n");
+    cardif = lireCaractere();
 
-    coupsRestants = strtol(dif, NULL, 10);
-    coupsFaux = strtol(dif, NULL, 10);
+    switch (cardif) {
+        case '1':
+            //difficulte = taille + 3 ;
+            nb_fautes = 3 ;
+            break ;
+        case '2':
+            //difficulte = taille + 6 ;
+            nb_fautes = 5 ;
+            break ;
+        case '3':
+            //difficulte = taille + 9 ;
+            nb_fautes = 8 ;
+            break ;
+    }
+
+    tentatives = nb_fautes;
+
+    coupsRestants = difficulte;
+    coupsFaux = difficulte;
     coups = coupsRestants;
-    
+    attemps = 0;
+    /*
     printf("\n \t \tNumber of attempts: %d \n", coupsRestants);
-    
-
-    //printf("\nMot secret : %s \n", motCache);
-    
     printf("___________________________________________\n");
-    
-while (strncmp(motActuel, motCache, taille) != 0 && coupsRestants > 0) {
+    */
+    printf("\n \t \t Maximum number of errors: %d \n", nb_fautes);
+    printf("___________________________________________\n");
+
+    char lettresProposees[TAILLE_MAX];
+    lettresProposees[0] = '\0';
+
+    /*
+        while (strncmp(motActuel, motCache, taille) != 0 && coupsRestants > 0) {
         printf("\n \t \t What is the secret word? %s\n", motActuel);
         printf("\t \t Remaining attempts: %d\n", coupsRestants);
 
@@ -223,9 +320,9 @@ while (strncmp(motActuel, motCache, taille) != 0 && coupsRestants > 0) {
             exit(0);
         }
 
-    TArbre result = rechercheCaractereTrie(trie, carLu);
+        TArbre result = rechercheCaractereTrie(trie, carLu);
 
-    if (result != NULL && carLu == result->caractere) {
+        if (result != NULL && carLu == result->caractere) {
         printf("\n \t \t Letter found: %c\n", result->caractere);
 
         int letterFound = 0;
@@ -243,39 +340,110 @@ while (strncmp(motActuel, motCache, taille) != 0 && coupsRestants > 0) {
             printf("____________________________________________________________________________\n");
 
             if (strncmp(motActuel, motCache, taille) == 0) {
-	printf("\n\n \t \t ____Congratulations :) \t The word to guess is __%s__ \n \t \tyou won in %d attempts!____\n\n",
-		   motCache, coups - coupsRestants);
+	            printf("\n\n \t \t ____Congratulations :) \t The word to guess is __%s__ \n \t \tyou won in %d attempts!____\n\n",
+		            motCache, coups - coupsRestants);
                 printf("____________________________________________________________________________\n");
                 coupsRestants = 0;
             }
         } else {
-            // La lettre a déjà été devinée
-           printf("\n \t \t Letter already guessed. You have %d attempts left.\n", coupsRestants);
+             // La lettre a déjà été devinée
+                printf("\n \t \t Letter already guessed. You have %d attempts left.\n", coupsRestants);
                printf("____________________________________________________________________________\n");
+            }
+        } else {
+            // result == NULL or carLu != result->caractere
+
+            coupsRestants--;
+            coupsFaux--;
+        
+            printf("\n \t \t Letter not found. You have %d attempts left.\n", coupsRestants);
+        
+            //printf("\t \t --haaaaang %d\n",coups- coupsFaux);
+	        displayHangman(coups - coupsFaux);  // Display Hangman for wrong letter
+            printf("____________________________________________________________________________\n");
         }
-    } else {
-        // result == NULL or carLu != result->caractere
+        }
+    */
+
+    while (strncmp(motActuel, motCache, taille) != 0 && tentatives > 0) {
+        printf("\n \t \t What is the secret word? %s\n", motActuel);
+        //printf("\t \t Remaining attempts: %d\n", nb_fautes);
+        printf("\n \t \t Maximum number of errors: %d \n", nb_fautes);
+
+        printf("\n \t \t Propose a letter: (or press 0 to quit)\n");
+
+        carLu = lireCaractere();
+
+        if (carLu == -1) {
+            // User entered '0', exit the game
+            printf("\t \t !!!! Goodbye !!!!\n");
+            exit(0);
+        }
+
+    TArbre result = rechercheCaractereTrie(trie, carLu);
+
+    if (result != NULL && carLu == result->caractere) {
+        printf("\n \t \t Letter found: %c\n", result->caractere);
+
+        attemps++ ;
+
+        int letterFound = 0;
+
+        for (i = 0; i < taille; i++) {
+            if (motCache[i] == result->caractere && motActuel[i] == '-') {
+                motActuel[i] = carLu;
+                letterFound = 1;
+            }
+        }
+
+        if (letterFound) {
+            //coupsRestants--;
+            attemps++;
+            
+            printf("____________________________________________________________________________\n");
+
+            if (strncmp(motActuel, motCache, taille) == 0) {
+	            //printf("\n\n \t \t ____Congratulations :) \t The word to guess is __%s__ \n \t \tyou won in %d attempts!____\n\n",
+		           // motCache, coups - coupsRestants);
+                printf("\n\n \t \t ____Congratulations :) \t The word to guess is __%s__ \n \t \tyou won in %d attempts!____\n\n",
+		            motCache, attemps);
+                printf("____________________________________________________________________________\n");
+                //coupsRestants = 0;
+                attemps = 0;
+            }
+        } else {
+             // La lettre a déjà été devinée
+                //printf("\n \t \t Letter already guessed. You have %d attempts left.\n", coupsRestants);
+                printf("\n \t \t Letter already guessed.\n");
+                printf("____________________________________________________________________________\n");
+            }
+        } else {
+            // result == NULL or carLu != result->caractere
+            
+            coupsRestants--;
+            coupsFaux--;
         
-        coupsRestants--;
-        coupsFaux--;
+            //printf("\n \t \t Letter not found. You have %d attempts left.\n", coupsRestants);
+            printf("\n \t \t Letter not found. You have %d attempts left.\n", tentatives - 1);
         
-        printf("\n \t \t Letter not found. You have %d attempts left.\n", coupsRestants);
-        
-        //printf("\t \t --haaaaang %d\n",coups- coupsFaux);
-	displayHangman(coups - coupsFaux);  // Display Hangman for wrong letter
-        printf("____________________________________________________________________________\n");
-        
+            //printf("\t \t --haaaaang %d\n",coups- coupsFaux);
+	        //displayHangman(coups - coupsFaux);  // Display Hangman for wrong letter
+            displayHangman(nb_fautes,tentatives);
+            tentatives --;
+            printf("____________________________________________________________________________\n");
+        }
     }
-}
- //while
 
-if (strncmp(motActuel, motCache, taille) != 0) {
+
+
+
+
+    if (strncmp(motActuel, motCache, taille) != 0) {
     printf("\n\n \t \t °__° You lost! \n \t \t The word was %s\n\n", motCache);
-    coupsRestants = 0;  
-}
-
+    coupsRestants = 0; 
+    attemps = 0; 
+    }
 
 
     return 0;
 }
-

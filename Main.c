@@ -9,7 +9,8 @@
 #include "dico.c"
 #include "pendu.c"
 #include "pendu.h"
-
+//#include "Pendu.c"
+//#include "Pendu.h"
 
 int main() {
 
@@ -40,10 +41,8 @@ int main() {
     
     afficherArbre(arbre);
     
-    gestionDuDico(&arbre);
-    
     genererMotSecret(&arbre);
-    
+	
     jeuxDePendu(arbre);
 	    
     arbreSuppr(&arbre);
