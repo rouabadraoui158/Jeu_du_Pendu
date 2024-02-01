@@ -9,9 +9,8 @@
 #define BUTTON_WIDTH 200
 #define BUTTON_HEIGHT 50
 #define VERTICAL_SPACING 20
-#define TITLE_BG_COLOR 50, 150, 200, 255 // Title background color (light blue)
-#define TITLE_TEXT_COLOR 255, 255, 255, 255 // Title text color (white)
-#define BUTTON_BORDER_COLOR 0, 0, 0, 255 // Button border color (black)
+#define TITLE_BG_COLOR 50, 150, 200, 255 // Light blue title background color
+#define TITLE_TEXT_COLOR 255, 255, 255, 255 // White title text color
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -19,13 +18,8 @@ TTF_Font* gFont = NULL;
 
 void closeSDL() {
     TTF_CloseFont(gFont);
-    gFont = NULL;
-
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
-    gRenderer = NULL;
-    gWindow = NULL;
-
     TTF_Quit();
     SDL_Quit();
 }
@@ -36,7 +30,7 @@ int initSDL() {
         return 0;
     }
 
-    gWindow = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    gWindow = SDL_CreateWindow("Welcome to Hangman!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (gWindow == NULL) {
         printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 0;
@@ -81,7 +75,7 @@ void renderText(const char* text, int x, int y, SDL_Color textColor) {
     }
 }
 
-void renderButtonWithBorder(const char* text, int x, int y, int width, int height, SDL_Color bgColor, SDL_Color textColor, SDL_Color borderColor) {
+void renderButton(const char* buttonText, int x, int y, int width, int height, SDL_Color bgColor, SDL_Color borderColor, SDL_Color textColor) {
     // Render button background
     SDL_Rect buttonRect = { x, y, width, height };
     SDL_SetRenderDrawColor(gRenderer, bgColor.r, bgColor.g, bgColor.b, bgColor.a);
@@ -93,8 +87,10 @@ void renderButtonWithBorder(const char* text, int x, int y, int width, int heigh
 
     // Render button text
     int textWidth, textHeight;
-    TTF_SizeText(gFont, text, &textWidth, &textHeight);
-    renderText(text, x + (width - textWidth) / 2, y + (height - textHeight) / 2, textColor);
+    TTF_SizeText(gFont, buttonText, &textWidth, &textHeight);
+    int textX = x + (width - textWidth) / 2;
+    int textY = y + (height - textHeight) / 2;
+    renderText(buttonText, textX, textY, textColor);
 }
 
 int main() {
@@ -104,7 +100,6 @@ int main() {
     }
 
     int quit = 0;
-    int startClicked = 0;
     SDL_Event e;
 
     while (!quit) {
@@ -117,7 +112,14 @@ int main() {
 
                 if (mouseX >= SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2 && mouseX <= SCREEN_WIDTH / 2 + BUTTON_WIDTH / 2 &&
                     mouseY >= SCREEN_HEIGHT / 2 + VERTICAL_SPACING && mouseY <= SCREEN_HEIGHT / 2 + VERTICAL_SPACING + BUTTON_HEIGHT) {
-                    startClicked = 1;
+                    // Start button clicked
+                    printf("Start button clicked!\n");
+
+                    // Implement code to move to another page (interface2.c)
+                    // You can use a function like renderInterface2(gRenderer) to render the second interface.
+                } else if (mouseX >= SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2 && mouseX <= SCREEN_WIDTH / 2 + BUTTON_WIDTH / 2 &&
+                           mouseY >= SCREEN_HEIGHT / 2 + BUTTON_HEIGHT + VERTICAL_SPACING * 2 && mouseY <= SCREEN_HEIGHT / 2 + BUTTON_HEIGHT * 2 + VERTICAL_SPACING * 2) {
+                    quit = 1;  // Quit the main loop
                 }
             }
         }
@@ -125,25 +127,19 @@ int main() {
         SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
         SDL_RenderClear(gRenderer);
 
+        // Render title
         SDL_Rect titleRect = { 0, SCREEN_HEIGHT / 8 - TEXT_SIZE / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 4 };
-        SDL_Rect startButtonRect = { SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2, SCREEN_HEIGHT / 2 + VERTICAL_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT };
-        SDL_Rect quitButtonRect = { SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2, SCREEN_HEIGHT / 2 + BUTTON_HEIGHT + VERTICAL_SPACING * 2, BUTTON_WIDTH, BUTTON_HEIGHT };
-
         SDL_SetRenderDrawColor(gRenderer, TITLE_BG_COLOR);
         SDL_RenderFillRect(gRenderer, &titleRect);
-
         renderText("Welcome to Hangman!", (SCREEN_WIDTH - TEXT_SIZE * 14) / 2, SCREEN_HEIGHT / 8, (SDL_Color){TITLE_TEXT_COLOR});
 
-        renderButtonWithBorder("Start", SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2, SCREEN_HEIGHT / 2 + VERTICAL_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT,
-                               (SDL_Color){TITLE_BG_COLOR}, (SDL_Color){0, 0, 0}, (SDL_Color){BUTTON_BORDER_COLOR});
+        // Render buttons with borders
+        SDL_Color buttonBgColor = {255, 255, 255, 255};
+        SDL_Color buttonBorderColor = {0, 0, 0, 255};
+        SDL_Color buttonTextColor = {0, 0, 0, 255};
+        renderButton("Start", SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2, SCREEN_HEIGHT / 2 + VERTICAL_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, buttonBgColor, buttonBorderColor, buttonTextColor);
 
-        renderButtonWithBorder("Exit", SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2, SCREEN_HEIGHT / 2 + BUTTON_HEIGHT + VERTICAL_SPACING * 2, BUTTON_WIDTH, BUTTON_HEIGHT,
-                               (SDL_Color){TITLE_BG_COLOR}, (SDL_Color){0, 0, 0}, (SDL_Color){BUTTON_BORDER_COLOR});
-
-        if (startClicked) {
-            printf("Start button clicked! Implement code to move to another page.\n");
-            // Add code to move to another page
-        }
+        renderButton("Exit", SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2, SCREEN_HEIGHT / 2 + BUTTON_HEIGHT + VERTICAL_SPACING * 2, BUTTON_WIDTH, BUTTON_HEIGHT, buttonBgColor, buttonBorderColor, buttonTextColor);
 
         SDL_RenderPresent(gRenderer);
     }
